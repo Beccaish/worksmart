@@ -7,249 +7,167 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0d0d0d;
-    --surface: #161616;
-    --surface2: #1e1e1e;
-    --border: #2a2a2a;
-    --border2: #383838;
-    --accent: #c5f135;
-    --accent-dim: rgba(197,241,53,0.12);
-    --text: #f0f0f0;
-    --text2: #888;
-    --text3: #555;
-    --green: #4ade80;
-    --red: #f87171;
-    --green-dim: rgba(74,222,128,0.1);
-    --red-dim: rgba(248,113,113,0.1);
-    --radius: 10px;
-    --radius-lg: 14px;
+    --bg:#0d0d0d;--surface:#161616;--surface2:#1e1e1e;
+    --border:#2a2a2a;--border2:#383838;
+    --accent:#c5f135;--accent-dim:rgba(197,241,53,0.12);
+    --text:#f0f0f0;--text2:#888;--text3:#555;
+    --green:#4ade80;--red:#f87171;
+    --red-dim:rgba(248,113,113,0.1);
+    --radius:10px;--radius-lg:14px;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Mono', monospace; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 13px; }
-
-  header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 18px 32px; border-bottom: 1px solid var(--border);
-    background: var(--bg); position: sticky; top: 0; z-index: 50;
-  }
-  .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: -0.02em; }
-  .logo span { color: var(--accent); }
-  .header-tag { font-size: 11px; color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase; }
-
-  main { max-width: 1200px; margin: 0 auto; padding: 32px 32px 64px; }
-
-  .upload-zone {
-    border: 1.5px dashed var(--border2); border-radius: var(--radius-lg);
-    padding: 56px 32px; text-align: center; cursor: pointer;
-    transition: all 0.2s ease; background: var(--surface); position: relative; overflow: hidden;
-  }
-  .upload-zone::before {
-    content: ''; position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 50% 0%, rgba(197,241,53,0.04) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .upload-zone:hover, .upload-zone.drag { border-color: var(--accent); background: var(--surface2); }
-  .upload-icon {
-    width: 52px; height: 52px; border: 1.5px solid var(--border2); border-radius: var(--radius);
-    display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;
-    background: var(--surface2); transition: all 0.2s;
-  }
-  .upload-zone:hover .upload-icon { border-color: var(--accent); color: var(--accent); }
-  .upload-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 6px; }
-  .upload-sub { color: var(--text2); font-size: 12px; }
-  .upload-sub strong { color: var(--accent); font-weight: 500; }
-
-  #loading {
-    display: none; border: 1px solid var(--border); border-radius: var(--radius-lg);
-    padding: 48px; text-align: center; background: var(--surface); margin-bottom: 32px;
-  }
-  .pulse-ring {
-    width: 48px; height: 48px; border: 2px solid var(--border2); border-top-color: var(--accent);
-    border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* BALANCES STRIP */
-  .balance-strip {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;
-    animation: fadeUp 0.3s ease both;
-  }
-  .balance-card {
-    background: var(--surface); border: 1px solid var(--border2);
-    border-radius: var(--radius); padding: 14px 18px;
-    display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  }
-  .balance-left { display: flex; flex-direction: column; gap: 4px; }
-  .balance-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; }
-  .balance-val { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; }
-  .balance-edit-btn {
-    background: none; border: 1px solid var(--border); border-radius: 6px;
-    color: var(--text3); padding: 4px 8px; cursor: pointer; font-size: 11px;
-    font-family: 'DM Mono', monospace; transition: all 0.15s;
-  }
-  .balance-edit-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .balance-input {
-    background: var(--bg); border: 1px solid var(--accent); border-radius: 6px;
-    color: var(--text); font-family: 'DM Mono', monospace; font-size: 13px;
-    padding: 4px 8px; width: 130px; outline: none;
-  }
-
-  .stats-row {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
-    margin-bottom: 20px; animation: fadeUp 0.4s ease both;
-  }
-  @keyframes fadeUp { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: none; } }
-  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; }
-  .stat-card.accent-card { border-color: rgba(197,241,53,0.25); background: var(--accent-dim); }
-  .stat-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
-  .stat-val { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; }
-  .stat-val.credit { color: var(--green); }
-  .stat-val.debit { color: var(--red); }
-  .stat-val.accent { color: var(--accent); }
-
-  .toolbar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; animation: fadeUp 0.4s 0.1s ease both; }
-  .toolbar-left { display: flex; gap: 10px; flex: 1; flex-wrap: wrap; }
-  .toolbar-right { display: flex; gap: 8px; }
-  input[type=text], input[type=number], select {
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-    color: var(--text); font-family: 'DM Mono', monospace; font-size: 12px;
-    padding: 8px 12px; outline: none; transition: border-color 0.15s;
-  }
-  input[type=text]:focus, input[type=number]:focus, select:focus { border-color: var(--border2); }
-  input[type=text] { min-width: 200px; }
-  select { cursor: pointer; }
-  select option { background: #1e1e1e; }
-
-  .btn {
-    display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px;
-    border-radius: var(--radius); font-family: 'DM Mono', monospace; font-size: 12px;
-    font-weight: 500; cursor: pointer; border: 1px solid var(--border);
-    background: var(--surface); color: var(--text2); transition: all 0.15s; white-space: nowrap;
-  }
-  .btn:hover { border-color: var(--border2); color: var(--text); background: var(--surface2); }
-  .btn.primary { background: var(--accent); color: #000; border-color: transparent; font-weight: 700; }
-  .btn.primary:hover { background: #d4f54a; }
-  .btn.danger { color: var(--red); border-color: rgba(248,113,113,0.2); }
-  .btn.danger:hover { background: var(--red-dim); }
-  .btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
-
-  .table-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; animation: fadeUp 0.4s 0.15s ease both; }
-  .table-wrap { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; }
-  thead { background: var(--surface2); }
-  th { padding: 11px 16px; text-align: left; font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; border-bottom: 1px solid var(--border); white-space: nowrap; }
-  td { padding: 10px 16px; border-bottom: 1px solid var(--border); color: var(--text); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 240px; }
-  tr:last-child td { border-bottom: none; }
-  tbody tr { transition: background 0.1s; }
-  tbody tr:hover td { background: var(--surface2); }
-  .amount-credit { color: var(--green); }
-  .amount-debit { color: var(--red); }
-  .cat-badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 10px; background: var(--surface2); color: var(--text2); border: 1px solid var(--border); white-space: nowrap; }
-  .actions-cell { display: flex; gap: 6px; justify-content: center; }
-  .icon-btn { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 6px; border: 1px solid var(--border); background: transparent; cursor: pointer; color: var(--text3); transition: all 0.15s; }
-  .icon-btn:hover { border-color: var(--border2); color: var(--text); background: var(--surface2); }
-  .icon-btn.del:hover { border-color: rgba(248,113,113,0.3); color: var(--red); background: var(--red-dim); }
-  .icon-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-  .empty-state { padding: 48px; text-align: center; color: var(--text3); }
-  .empty-state .big { font-size: 28px; margin-bottom: 10px; }
-
-  .pagination { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text3); }
-  .pag-btns { display: flex; gap: 6px; }
-
-  /* MODAL */
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
-  .modal-overlay.open { display: flex; }
-  .modal { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-lg); padding: 28px; width: 420px; max-width: 95vw; animation: popIn 0.2s ease; }
-  @keyframes popIn { from { opacity:0; transform: scale(0.95); } to { opacity:1; transform: none; } }
-  .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-  .modal-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; }
-  .modal-close { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 20px; line-height: 1; }
-  .modal-close:hover { color: var(--text); }
-  .form-field { margin-bottom: 14px; }
-  .form-label { display: block; font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
-  .form-input { width: 100%; background: var(--bg); border: 1px solid var(--border2); border-radius: var(--radius); color: var(--text); font-family: 'DM Mono', monospace; font-size: 12px; padding: 9px 12px; outline: none; transition: border-color 0.15s; }
-  .form-input:focus { border-color: var(--accent); }
-  .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
-
-  /* CATEGORY MANAGER */
-  .cat-manager { border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); padding: 10px; max-height: 200px; overflow-y: auto; }
-  .cat-item { display: flex; align-items: center; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--border); }
-  .cat-item:last-child { border-bottom: none; }
-  .cat-item-name { flex: 1; font-size: 12px; }
-  .cat-add-row { display: flex; gap: 6px; margin-top: 8px; }
-  .cat-add-row input { flex: 1; }
-
-  .file-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; background: var(--accent-dim); border: 1px solid rgba(197,241,53,0.2); border-radius: 20px; font-size: 11px; color: var(--accent); margin-bottom: 20px; }
-
-  #data-section { display: none; }
-
-  @media (max-width: 700px) {
-    main { padding: 16px; }
-    header { padding: 14px 16px; }
-    .stats-row { grid-template-columns: repeat(2,1fr); }
-    .balance-strip { grid-template-columns: 1fr; }
-    .toolbar { flex-direction: column; align-items: stretch; }
-    input[type=text] { min-width: unset; width: 100%; }
-  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Mono',monospace;background:var(--bg);color:var(--text);min-height:100vh;font-size:13px;}
+  header{display:flex;align-items:center;justify-content:space-between;padding:18px 32px;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:50;}
+  .logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;letter-spacing:-0.02em;}
+  .logo span{color:var(--accent);}
+  .header-tag{font-size:11px;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;}
+  .api-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 32px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .api-bar label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;white-space:nowrap;}
+  .api-bar input{flex:1;min-width:240px;background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-family:'DM Mono',monospace;font-size:12px;padding:7px 12px;outline:none;transition:border-color 0.2s;}
+  .api-bar input:focus{border-color:var(--accent);}
+  .api-bar input::placeholder{color:var(--text3);}
+  .api-status{font-size:11px;padding:4px 10px;border-radius:20px;white-space:nowrap;}
+  .api-status.ok{background:rgba(74,222,128,0.12);color:var(--green);border:1px solid rgba(74,222,128,0.2);}
+  .api-status.missing{background:rgba(197,241,53,0.08);color:var(--accent);border:1px solid rgba(197,241,53,0.2);}
+  .api-link{font-size:11px;color:var(--text3);text-decoration:none;}
+  .api-link:hover{color:var(--accent);}
+  main{max-width:1280px;margin:0 auto;padding:32px 32px 64px;}
+  .upload-zone{border:1.5px dashed var(--border2);border-radius:var(--radius-lg);padding:56px 32px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--surface);position:relative;overflow:hidden;}
+  .upload-zone::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(197,241,53,0.04) 0%,transparent 70%);pointer-events:none;}
+  .upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:var(--surface2);}
+  .upload-icon{width:52px;height:52px;border:1.5px solid var(--border2);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;background:var(--surface2);transition:all 0.2s;}
+  .upload-zone:hover .upload-icon{border-color:var(--accent);color:var(--accent);}
+  .upload-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:6px;}
+  .upload-sub{color:var(--text2);font-size:12px;}
+  .upload-sub strong{color:var(--accent);font-weight:500;}
+  #loading{display:none;border:1px solid var(--border);border-radius:var(--radius-lg);padding:48px;text-align:center;background:var(--surface);margin-bottom:32px;}
+  .pulse-ring{width:48px;height:48px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .balance-strip{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;animation:fadeUp 0.3s ease both;}
+  .balance-card{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .balance-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;}
+  .balance-val{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;}
+  .balance-edit-btn{background:none;border:1px solid var(--border);border-radius:6px;color:var(--text3);padding:4px 8px;cursor:pointer;font-size:11px;font-family:'DM Mono',monospace;transition:all 0.15s;}
+  .balance-edit-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;animation:fadeUp 0.4s ease both;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;}
+  .stat-card.accent-card{border-color:rgba(197,241,53,0.25);background:var(--accent-dim);}
+  .stat-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;}
+  .stat-val{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;}
+  .stat-val.credit{color:var(--green);}.stat-val.debit{color:var(--red);}.stat-val.accent{color:var(--accent);}
+  .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px;animation:fadeUp 0.4s 0.1s ease both;}
+  .toolbar-left{display:flex;gap:10px;flex:1;flex-wrap:wrap;}
+  .toolbar-right{display:flex;gap:8px;}
+  input[type=text],input[type=number],select{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:'DM Mono',monospace;font-size:12px;padding:8px 12px;outline:none;transition:border-color 0.15s;}
+  input[type=text]:focus,input[type=number]:focus,select:focus{border-color:var(--border2);}
+  input[type=text]{min-width:200px;}
+  select{cursor:pointer;}select option{background:#1e1e1e;}
+  .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--radius);font-family:'DM Mono',monospace;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text2);transition:all 0.15s;white-space:nowrap;}
+  .btn:hover{border-color:var(--border2);color:var(--text);background:var(--surface2);}
+  .btn.primary{background:var(--accent);color:#000;border-color:transparent;font-weight:700;}
+  .btn.primary:hover{background:#d4f54a;}
+  .btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+  .table-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;animation:fadeUp 0.4s 0.15s ease both;}
+  .table-wrap{overflow-x:auto;}
+  table{width:100%;border-collapse:collapse;}
+  thead{background:var(--surface2);}
+  th{padding:11px 14px;text-align:left;font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;font-weight:500;border-bottom:1px solid var(--border);white-space:nowrap;}
+  td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  td.desc-cell{max-width:240px;}
+  tr:last-child td{border-bottom:none;}
+  tbody tr:hover td{background:var(--surface2);}
+  tr.bal-row td{background:rgba(197,241,53,0.06);color:var(--accent);font-weight:500;border-bottom:1px solid rgba(197,241,53,0.15);}
+  tr.bal-row:hover td{background:rgba(197,241,53,0.1);}
+  .amount-credit{color:var(--green);}.amount-debit{color:var(--red);}
+  .running-pos{color:var(--green);font-variant-numeric:tabular-nums;}
+  .running-neg{color:var(--red);font-variant-numeric:tabular-nums;}
+  .running-na{color:var(--text3);font-size:11px;}
+  .cat-badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;background:var(--surface2);color:var(--text2);border:1px solid var(--border);white-space:nowrap;}
+  .actions-cell{display:flex;gap:6px;justify-content:center;}
+  .icon-btn{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;border:1px solid var(--border);background:transparent;cursor:pointer;color:var(--text3);transition:all 0.15s;}
+  .icon-btn:hover{border-color:var(--border2);color:var(--text);background:var(--surface2);}
+  .icon-btn.del:hover{border-color:rgba(248,113,113,0.3);color:var(--red);background:var(--red-dim);}
+  .icon-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+  .empty-state{padding:48px;text-align:center;color:var(--text3);}
+  .empty-state .big{font-size:28px;margin-bottom:10px;}
+  .pagination{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-top:1px solid var(--border);font-size:11px;color:var(--text3);}
+  .pag-btns{display:flex;gap:6px;}
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:100;align-items:center;justify-content:center;backdrop-filter:blur(3px);}
+  .modal-overlay.open{display:flex;}
+  .modal{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:28px;width:440px;max-width:95vw;animation:popIn 0.2s ease;}
+  @keyframes popIn{from{opacity:0;transform:scale(0.95);}to{opacity:1;transform:none;}}
+  .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+  .modal-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;}
+  .modal-close{background:none;border:none;color:var(--text3);cursor:pointer;font-size:20px;line-height:1;}
+  .modal-close:hover{color:var(--text);}
+  .form-field{margin-bottom:14px;}
+  .form-label{display:block;font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;}
+  .form-input{width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-family:'DM Mono',monospace;font-size:12px;padding:9px 12px;outline:none;transition:border-color 0.15s;}
+  .form-input:focus{border-color:var(--accent);}
+  .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;}
+  .cat-manager{border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);padding:10px;max-height:200px;overflow-y:auto;}
+  .cat-item{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);}
+  .cat-item:last-child{border-bottom:none;}
+  .cat-item-name{flex:1;font-size:12px;}
+  .cat-add-row{display:flex;gap:6px;margin-top:8px;}
+  .cat-add-row input{flex:1;}
+  .file-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;background:var(--accent-dim);border:1px solid rgba(197,241,53,0.2);border-radius:20px;font-size:11px;color:var(--accent);margin-bottom:16px;}
+  #data-section{display:none;}
+  @media(max-width:700px){main{padding:16px;}header{padding:14px 16px;}.api-bar{padding:10px 16px;}.stats-row{grid-template-columns:repeat(2,1fr);}.balance-strip{grid-template-columns:1fr;}.toolbar{flex-direction:column;align-items:stretch;}input[type=text]{min-width:unset;width:100%;}}
 </style>
 </head>
 <body>
 
 <header>
   <div class="logo">Work<span>Smart</span> <span style="color:var(--text3);font-weight:400;font-size:14px">/ Statement Parser</span></div>
-  <div class="header-tag">AI-Powered · PDF → CSV</div>
+  <div class="header-tag">Claude Haiku 4.5</div>
 </header>
 
-<main>
+<div class="api-bar">
+  <label>Anthropic API Key</label>
+  <input type="password" id="api-key" placeholder="sk-ant-api03-… paste once, saved forever" oninput="onKeyInput()">
+  <span id="api-status" class="api-status missing">⚠ Key required</span>
+  <a class="api-link" href="https://console.anthropic.com/settings/keys" target="_blank">Get free key →</a>
+</div>
 
+<main>
   <div id="upload-section">
     <div class="upload-zone" id="dropzone"
-      onclick="document.getElementById('fileinput').click()"
+      onclick="tryUpload()"
       ondragover="onDrag(event,true)" ondragleave="onDrag(event,false)" ondrop="onDrop(event)">
       <div class="upload-icon">
         <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/>
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14,2 14,8 20,8"/>
           <line x1="12" y1="18" x2="12" y2="12"/><polyline points="9,15 12,12 15,15"/>
         </svg>
       </div>
       <div class="upload-title">Drop your bank statement PDF</div>
-      <div class="upload-sub" style="margin-top:6px">Drag &amp; drop or <strong>click to browse</strong> — text-based PDF required</div>
+      <div class="upload-sub" style="margin-top:6px">Drag &amp; drop or <strong>click to browse</strong> — parsed by Claude Haiku</div>
     </div>
     <input type="file" id="fileinput" accept=".pdf" style="display:none" onchange="handleFile(this.files[0])">
   </div>
 
   <div id="loading">
     <div class="pulse-ring"></div>
-    <div style="color:var(--text2);font-size:13px">Parsing transactions with <span style="color:var(--accent)">AI</span>…</div>
-    <div style="color:var(--text3);font-size:11px;margin-top:8px">This may take 10–20 seconds depending on statement length</div>
+    <div style="color:var(--text2);font-size:13px">Reading with Claude Haiku…</div>
+    <div style="color:var(--text3);font-size:11px;margin-top:8px">Extracting all transactions — usually 10–20 seconds</div>
   </div>
 
   <div id="data-section">
     <div id="file-badge-wrap"></div>
-
-    <!-- OPENING / CLOSING BALANCES -->
-    <div class="balance-strip" id="balance-strip">
+    <div class="balance-strip">
       <div class="balance-card">
-        <div class="balance-left">
-          <div class="balance-label">Opening Balance</div>
-          <div class="balance-val" id="open-val" style="color:var(--text2)">—</div>
-        </div>
+        <div><div class="balance-label">Opening Balance</div><div class="balance-val" id="open-val" style="color:var(--text3)">—</div></div>
         <button class="balance-edit-btn" onclick="editBalance('open')">Edit</button>
       </div>
       <div class="balance-card">
-        <div class="balance-left">
-          <div class="balance-label">Closing Balance</div>
-          <div class="balance-val" id="close-val" style="color:var(--text2)">—</div>
-        </div>
+        <div><div class="balance-label">Closing Balance</div><div class="balance-val" id="close-val" style="color:var(--text3)">—</div></div>
         <button class="balance-edit-btn" onclick="editBalance('close')">Edit</button>
       </div>
     </div>
-
-    <!-- STATS -->
     <div class="stats-row" id="stats-row"></div>
-
-    <!-- TOOLBAR -->
     <div class="toolbar">
       <div class="toolbar-left">
         <input type="text" id="search" placeholder="Search description, date, amount…" oninput="filterRows()">
@@ -258,20 +176,18 @@
           <option value="credit">Credits only</option>
           <option value="debit">Debits only</option>
         </select>
-        <select id="catFilter" onchange="filterRows()">
-          <option value="">All categories</option>
-        </select>
+        <select id="catFilter" onchange="filterRows()"><option value="">All categories</option></select>
       </div>
       <div class="toolbar-right">
         <button class="btn" onclick="openCatManager()">
-          <svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1" fill="currentColor"/><circle cx="9" cy="12" r="1" fill="currentColor"/><circle cx="9" cy="19" r="1" fill="currentColor"/><line x1="14" y1="5" x2="20" y2="5"/><line x1="14" y1="12" x2="20" y2="12"/><line x1="14" y1="19" x2="20" y2="19"/></svg>
+          <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
           Categories
         </button>
         <button class="btn" onclick="openAdd()">
           <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           Add row
         </button>
-        <button class="btn primary" id="export-btn" onclick="exportCSV()">
+        <button class="btn primary" onclick="exportCSV()">
           <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Export CSV
         </button>
@@ -281,18 +197,17 @@
         </button>
       </div>
     </div>
-
-    <!-- TABLE -->
     <div class="table-card">
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th style="width:110px">Date</th>
+              <th style="width:105px">Date</th>
               <th>Description</th>
-              <th style="width:120px">Category</th>
+              <th style="width:110px">Category</th>
               <th style="width:120px;text-align:right">Amount</th>
-              <th style="width:80px;text-align:center">Actions</th>
+              <th style="width:130px;text-align:right">Balance</th>
+              <th style="width:76px;text-align:center">Actions</th>
             </tr>
           </thead>
           <tbody id="tbody"></tbody>
@@ -306,430 +221,322 @@
 <!-- TRANSACTION MODAL -->
 <div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title" id="modal-title">Add Transaction</div>
-      <button class="modal-close" onclick="closeModal()">✕</button>
-    </div>
-    <div class="form-field">
-      <label class="form-label">Date</label>
-      <input class="form-input" type="text" id="m-date" placeholder="2024-01-15">
-    </div>
-    <div class="form-field">
-      <label class="form-label">Description</label>
-      <input class="form-input" type="text" id="m-desc" placeholder="Payee / narrative">
-    </div>
-    <div class="form-field">
-      <label class="form-label">Category</label>
-      <select class="form-input" id="m-cat"></select>
-    </div>
-    <div class="form-field">
-      <label class="form-label">Amount (positive = credit, negative = debit)</label>
-      <input class="form-input" type="number" id="m-amt" step="0.01" placeholder="-250.00">
-    </div>
-    <div class="modal-actions">
-      <button class="btn" onclick="closeModal()">Cancel</button>
-      <button class="btn primary" onclick="saveModal()">Save Transaction</button>
-    </div>
+    <div class="modal-header"><div class="modal-title" id="modal-title">Add Transaction</div><button class="modal-close" onclick="closeModal()">✕</button></div>
+    <div class="form-field"><label class="form-label">Date</label><input class="form-input" type="text" id="m-date" placeholder="2024-01-15"></div>
+    <div class="form-field"><label class="form-label">Description</label><input class="form-input" type="text" id="m-desc" placeholder="Payee / narrative"></div>
+    <div class="form-field"><label class="form-label">Category</label><select class="form-input" id="m-cat"></select></div>
+    <div class="form-field"><label class="form-label">Amount (positive = credit, negative = debit)</label><input class="form-input" type="number" id="m-amt" step="0.01" placeholder="-250.00"></div>
+    <div class="modal-actions"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn primary" onclick="saveModal()">Save</button></div>
   </div>
 </div>
 
-<!-- CATEGORY MANAGER MODAL -->
+<!-- CATEGORY MODAL -->
 <div class="modal-overlay" id="cat-modal" onclick="if(event.target===this)closeCatModal()">
   <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">Manage Categories</div>
-      <button class="modal-close" onclick="closeCatModal()">✕</button>
-    </div>
-    <p style="font-size:11px;color:var(--text3);margin-bottom:12px">Edit, delete or add custom categories. Changes apply to all dropdowns and the category filter.</p>
+    <div class="modal-header"><div class="modal-title">Manage Categories</div><button class="modal-close" onclick="closeCatModal()">✕</button></div>
+    <p style="font-size:11px;color:var(--text3);margin-bottom:12px">Rename, delete or add categories.</p>
     <div class="cat-manager" id="cat-list"></div>
     <div class="cat-add-row">
-      <input type="text" id="new-cat-input" placeholder="New category name…" onkeydown="if(event.key==='Enter')addCategory()" style="font-size:12px">
+      <input type="text" id="new-cat-input" placeholder="New category…" onkeydown="if(event.key==='Enter')addCategory()" style="font-size:12px">
       <button class="btn primary" onclick="addCategory()" style="padding:7px 14px">Add</button>
     </div>
-    <div class="modal-actions">
-      <button class="btn primary" onclick="closeCatModal()">Done</button>
-    </div>
+    <div class="modal-actions"><button class="btn primary" onclick="closeCatModal()">Done</button></div>
   </div>
 </div>
 
-<!-- BALANCE EDIT MODAL -->
+<!-- BALANCE MODAL -->
 <div class="modal-overlay" id="bal-modal" onclick="if(event.target===this)closeBalModal()">
   <div class="modal" style="width:320px">
-    <div class="modal-header">
-      <div class="modal-title" id="bal-modal-title">Opening Balance</div>
-      <button class="modal-close" onclick="closeBalModal()">✕</button>
-    </div>
-    <div class="form-field">
-      <label class="form-label">Balance Amount</label>
-      <input class="form-input" type="number" id="bal-input" step="0.01" placeholder="0.00">
-    </div>
-    <div class="modal-actions">
-      <button class="btn" onclick="closeBalModal()">Cancel</button>
-      <button class="btn primary" onclick="saveBalance()">Save</button>
-    </div>
+    <div class="modal-header"><div class="modal-title" id="bal-modal-title">Edit Balance</div><button class="modal-close" onclick="closeBalModal()">✕</button></div>
+    <div class="form-field"><label class="form-label">Amount (R)</label><input class="form-input" type="number" id="bal-input" step="0.01" placeholder="0.00"></div>
+    <div class="modal-actions"><button class="btn" onclick="closeBalModal()">Cancel</button><button class="btn primary" onclick="saveBalance()">Save</button></div>
   </div>
 </div>
 
 <script>
-  /* ─── STATE ─── */
-  let allRows = [], filtered = [], page = 0, modalMode = 'add', editId = null;
-  let openingBalance = null, closingBalance = null, balEditTarget = null;
-  const PAGE_SIZE = 25;
-  let categories = ['Groceries','Utilities','Salary','Transfer','Entertainment','Transport','Healthcare','Insurance','Other'];
+/* ═══════════════════════════════════════════════════
+   WORKSMART STATEMENT PARSER — Claude Haiku 4.5
+   Single HTML file. Uses XMLHttpRequest instead of
+   fetch() — XHR bypasses the CORS preflight that
+   blocks fetch() from file:// origins.
+═══════════════════════════════════════════════════ */
 
-  /* ─── DRAG & DROP ─── */
-  function onDrag(e, on) { e.preventDefault(); document.getElementById('dropzone').classList.toggle('drag', on); }
-  function onDrop(e) { e.preventDefault(); onDrag(e, false); if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); }
+let allRows=[], filtered=[], page=0, modalMode='add', editId=null;
+let openingBalance=null, closingBalance=null, balEditTarget=null;
+const PAGE_SIZE=25;
+let categories=['Groceries','Utilities','Salary','Transfer','Entertainment','Transport','Healthcare','Insurance','Tax','Fees','Other'];
 
-  /* ─── FILE HANDLING ─── */
-  async function handleFile(file) {
-    if (!file || file.type !== 'application/pdf') { alert('Please upload a PDF file.'); return; }
-    const reader = new FileReader();
-    reader.onload = async (ev) => {
-      document.getElementById('upload-section').style.display = 'none';
-      document.getElementById('loading').style.display = 'block';
-      const b64 = ev.target.result.split(',')[1];
-      try {
-        const result = await parseWithClaude(b64);
-        allRows = result.transactions.map((r, i) => ({ ...r, id: Date.now() + i }));
-        if (result.openingBalance !== null) { openingBalance = result.openingBalance; }
-        if (result.closingBalance !== null) { closingBalance = result.closingBalance; }
-        renderBalances();
-        syncCatOptions();
-        filterRows();
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('data-section').style.display = 'block';
-        document.getElementById('file-badge-wrap').innerHTML =
-          `<div class="file-badge">
-            <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
-            ${esc(file.name)} &nbsp;·&nbsp; ${allRows.length} transactions extracted
-          </div>`;
-      } catch (err) {
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('upload-section').style.display = 'block';
-        alert('Could not parse the PDF.\n\n' + err.message);
-      }
-    };
-    reader.readAsDataURL(file);
+window.addEventListener('DOMContentLoaded',()=>{
+  const saved=localStorage.getItem('ws_ant_key');
+  if(saved){document.getElementById('api-key').value=saved;onKeyInput();}
+});
+
+function getKey(){return localStorage.getItem('ws_ant_key')||'';}
+function onKeyInput(){
+  const k=(document.getElementById('api-key').value||'').trim();
+  const ok=k.startsWith('sk-ant-')&&k.length>30;
+  const el=document.getElementById('api-status');
+  el.textContent=ok?'✓ Key saved':'⚠ Key required';
+  el.className='api-status '+(ok?'ok':'missing');
+  if(ok)localStorage.setItem('ws_ant_key',k);
+}
+
+function onDrag(e,on){e.preventDefault();document.getElementById('dropzone').classList.toggle('drag',on);}
+function onDrop(e){e.preventDefault();onDrag(e,false);if(e.dataTransfer.files[0])handleFile(e.dataTransfer.files[0]);}
+function tryUpload(){
+  if(!getKey()){
+    const i=document.getElementById('api-key');i.focus();i.style.borderColor='var(--accent)';
+    setTimeout(()=>i.style.borderColor='',2000);
+    return;
   }
+  document.getElementById('fileinput').click();
+}
 
-  /* ─── CLAUDE API ─── */
-  async function parseWithClaude(b64) {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 4000,
-        system: `You are a bank statement parser. Extract ALL transactions and balance information from the PDF.
+function toBase64(file){
+  return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(file);});
+}
+
+async function handleFile(file){
+  if(!file||file.type!=='application/pdf'){alert('Please upload a PDF file.');return;}
+  const key=getKey();
+  if(!key){alert('Please paste your Anthropic API key first.');return;}
+  document.getElementById('upload-section').style.display='none';
+  document.getElementById('loading').style.display='block';
+  try{
+    const b64=await toBase64(file);
+    const result=await callClaude(key,b64);
+    allRows=result.transactions.map((r,i)=>({...r,id:Date.now()+i}));
+    openingBalance=result.openingBalance;
+    closingBalance=result.closingBalance;
+    document.getElementById('loading').style.display='none';
+    document.getElementById('data-section').style.display='block';
+    document.getElementById('file-badge-wrap').innerHTML=
+      `<div class="file-badge"><svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>${esc(file.name)} · ${allRows.length} transactions</div>`;
+    renderBalances();syncCatOptions();filterRows();
+  }catch(err){
+    document.getElementById('loading').style.display='none';
+    document.getElementById('upload-section').style.display='block';
+    alert('Error: '+err.message);
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   XHR-based API call — avoids fetch() CORS preflight
+   so this works when opened directly from desktop
+═══════════════════════════════════════════════════ */
+function callClaude(apiKey, b64pdf){
+  return new Promise((resolve, reject)=>{
+    const PROMPT=`Extract ALL transactions from this bank statement PDF.
 Return ONLY a valid JSON object — no markdown, no backticks, no explanation.
-The object must have:
-- openingBalance: number or null (opening/brought forward balance if shown)
-- closingBalance: number or null (closing/carried forward balance if shown)
-- transactions: array of objects, each with:
-  - date: string (YYYY-MM-DD or original format found)
-  - description: string (payee/narrative, keep concise)
-  - category: one of [Groceries, Utilities, Salary, Transfer, Entertainment, Transport, Healthcare, Insurance, Other]
-  - amount: number (positive for credits/deposits, negative for debits/payments)
-Categorise intelligently from the description.`,
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: b64 } },
-            { type: 'text', text: 'Extract all transactions and balances. Return only the JSON object.' }
-          ]
-        }]
-      })
+{
+  "openingBalance": <number or null>,
+  "closingBalance": <number or null>,
+  "transactions": [
+    { "date": "<YYYY-MM-DD>", "description": "<payee>", "category": "<Groceries|Utilities|Salary|Transfer|Entertainment|Transport|Healthcare|Insurance|Tax|Fees|Other>", "amount": <positive=credit, negative=debit> }
+  ]
+}
+Extract EVERY transaction row. openingBalance/closingBalance from statement if shown, else null. Positive amount = money IN, negative = money OUT.`;
+
+    const body=JSON.stringify({
+      model:'claude-haiku-4-5',
+      max_tokens:8192,
+      messages:[{role:'user',content:[
+        {type:'document',source:{type:'base64',media_type:'application/pdf',data:b64pdf}},
+        {type:'text',text:PROMPT}
+      ]}]
     });
-    const data = await res.json();
-    if (data.error) throw new Error(data.error.message || 'API error');
-    const raw = (data.content || []).map(c => c.text || '').join('');
-    const clean = raw.replace(/```json|```/g, '').trim();
-    let parsed;
-    try { parsed = JSON.parse(clean); }
-    catch {
-      const m = clean.match(/\{[\s\S]*\}/);
-      if (m) parsed = JSON.parse(m[0]);
-      else throw new Error('Could not parse AI response as JSON.');
-    }
-    if (!parsed.transactions) {
-      if (Array.isArray(parsed)) return { transactions: parsed, openingBalance: null, closingBalance: null };
-      throw new Error('Unexpected response format.');
-    }
-    return parsed;
-  }
 
-  /* ─── BALANCES ─── */
-  function renderBalances() {
-    const ov = document.getElementById('open-val');
-    const cv = document.getElementById('close-val');
-    if (openingBalance !== null) {
-      ov.textContent = 'R ' + fmtAmt(openingBalance);
-      ov.style.color = openingBalance >= 0 ? 'var(--green)' : 'var(--red)';
-    } else {
-      ov.textContent = '— not found';
-      ov.style.color = 'var(--text3)';
-    }
-    if (closingBalance !== null) {
-      cv.textContent = 'R ' + fmtAmt(closingBalance);
-      cv.style.color = closingBalance >= 0 ? 'var(--green)' : 'var(--red)';
-    } else {
-      cv.textContent = '— not found';
-      cv.style.color = 'var(--text3)';
-    }
-  }
+    const xhr=new XMLHttpRequest();
+    xhr.open('POST','https://api.anthropic.com/v1/messages',true);
+    xhr.setRequestHeader('Content-Type','application/json');
+    xhr.setRequestHeader('x-api-key',apiKey);
+    xhr.setRequestHeader('anthropic-version','2023-06-01');
+    xhr.setRequestHeader('anthropic-dangerous-direct-browser-calls','true');
+    xhr.timeout=120000;
 
-  function editBalance(which) {
-    balEditTarget = which;
-    document.getElementById('bal-modal-title').textContent = which === 'open' ? 'Opening Balance' : 'Closing Balance';
-    const current = which === 'open' ? openingBalance : closingBalance;
-    document.getElementById('bal-input').value = current !== null ? current : '';
-    document.getElementById('bal-modal').classList.add('open');
-    document.getElementById('bal-input').focus();
-  }
-  function closeBalModal() { document.getElementById('bal-modal').classList.remove('open'); }
-  function saveBalance() {
-    const v = parseFloat(document.getElementById('bal-input').value);
-    if (isNaN(v)) { alert('Please enter a valid number.'); return; }
-    if (balEditTarget === 'open') openingBalance = v;
-    else closingBalance = v;
-    renderBalances();
-    closeBalModal();
-  }
+    xhr.onload=function(){
+      try{
+        const data=JSON.parse(xhr.responseText);
+        if(xhr.status!==200){
+          const msg=data?.error?.message||'HTTP '+xhr.status;
+          if(xhr.status===401)return reject(new Error('Invalid API key — check console.anthropic.com/settings/keys'));
+          if(xhr.status===403)return reject(new Error('API key rejected — make sure it starts with sk-ant- and billing is active'));
+          if(xhr.status===429)return reject(new Error('Rate limit — wait 30 seconds and try again'));
+          if(xhr.status===400)return reject(new Error('Bad request: '+msg));
+          return reject(new Error(msg));
+        }
+        const raw=(data.content||[]).map(c=>c.text||'').join('');
+        if(!raw)return reject(new Error('Empty response from Claude — try again'));
+        const clean=raw.replace(/^```(?:json)?\s*/i,'').replace(/\s*```$/,'').trim();
+        let parsed;
+        try{parsed=JSON.parse(clean);}
+        catch{
+          const m=clean.match(/\{[\s\S]*\}/);
+          if(m)try{parsed=JSON.parse(m[0]);}catch{return reject(new Error('Could not parse response'));}
+          else return reject(new Error('No JSON in response: '+clean.slice(0,200)));
+        }
+        if(Array.isArray(parsed))return resolve({transactions:parsed,openingBalance:null,closingBalance:null});
+        if(!parsed.transactions)return reject(new Error('Unexpected response structure'));
+        parsed.transactions=parsed.transactions
+          .map(t=>({...t,amount:Math.round(parseFloat(t.amount)*100)/100}))
+          .filter(t=>!isNaN(t.amount));
+        resolve(parsed);
+      }catch(e){reject(new Error('Parse error: '+e.message));}
+    };
+    xhr.onerror=function(){
+      reject(new Error('Network error — check your internet connection. If this file is open from your desktop, your browser may be blocking the request. Try opening it in Chrome or Edge.'));
+    };
+    xhr.ontimeout=function(){reject(new Error('Request timed out — try again'));};
+    xhr.send(body);
+  });
+}
 
-  /* ─── CATEGORY MANAGER ─── */
-  function openCatManager() {
-    renderCatList();
-    document.getElementById('cat-modal').classList.add('open');
-    document.getElementById('new-cat-input').value = '';
-  }
-  function closeCatModal() {
-    document.getElementById('cat-modal').classList.remove('open');
-    syncCatOptions();
-    populateCatFilter();
-  }
-  function renderCatList() {
-    document.getElementById('cat-list').innerHTML = categories.map((c, i) => `
-      <div class="cat-item">
-        <span class="cat-item-name">${esc(c)}</span>
-        <button class="icon-btn" onclick="renameCategory(${i})" title="Rename" style="width:24px;height:24px">
-          <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-        </button>
-        <button class="icon-btn del" onclick="deleteCategory(${i})" title="Delete" style="width:24px;height:24px">
-          <svg viewBox="0 0 24 24"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-        </button>
-      </div>`).join('');
-  }
-  function addCategory() {
-    const v = document.getElementById('new-cat-input').value.trim();
-    if (!v) return;
-    if (categories.includes(v)) { alert('Category already exists.'); return; }
-    categories.push(v);
-    document.getElementById('new-cat-input').value = '';
-    renderCatList();
-  }
-  function deleteCategory(i) {
-    if (categories.length <= 1) { alert('At least one category required.'); return; }
-    const name = categories[i];
-    if (!confirm(`Delete "${name}"? Transactions with this category will be set to "Other".`)) return;
-    allRows.forEach(r => { if (r.category === name) r.category = 'Other'; });
-    categories.splice(i, 1);
-    renderCatList();
-  }
-  function renameCategory(i) {
-    const old = categories[i];
-    const newName = prompt('Rename category:', old);
-    if (!newName || newName.trim() === old) return;
-    const trimmed = newName.trim();
-    if (categories.includes(trimmed)) { alert('Name already exists.'); return; }
-    allRows.forEach(r => { if (r.category === old) r.category = trimmed; });
-    categories[i] = trimmed;
-    renderCatList();
-  }
-  function syncCatOptions() {
-    // Merge categories from data + custom list, dedup
-    const fromData = [...new Set(allRows.map(r => r.category).filter(Boolean))];
-    fromData.forEach(c => { if (!categories.includes(c)) categories.push(c); });
-    const opts = categories.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
-    document.getElementById('m-cat').innerHTML = opts;
-  }
-  function populateCatFilter() {
-    const sel = document.getElementById('catFilter');
-    const cur = sel.value;
-    sel.innerHTML = '<option value="">All categories</option>' +
-      categories.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
-    if (cur) sel.value = cur;
-  }
+/* ─── RUNNING BALANCE ─── */
+function computeRunningBalances(rows){
+  let bal=openingBalance!==null?openingBalance:null;
+  return rows.map(r=>{if(bal!==null){bal=Math.round((bal+r.amount)*100)/100;return bal;}return null;});
+}
 
-  /* ─── FILTER & RENDER ─── */
-  function filterRows() {
-    const q = (document.getElementById('search')?.value || '').toLowerCase();
-    const t = document.getElementById('typeFilter')?.value || '';
-    const c = document.getElementById('catFilter')?.value || '';
-    filtered = allRows.filter(r => {
-      const mq = !q || (r.description||'').toLowerCase().includes(q) || (r.date||'').includes(q) || String(Math.abs(r.amount||0)).includes(q);
-      const mt = !t || (t === 'credit' ? r.amount >= 0 : r.amount < 0);
-      const mc = !c || r.category === c;
-      return mq && mt && mc;
-    });
-    page = 0;
-    renderStats();
-    renderTable();
-    renderPagination();
-  }
+/* ─── BALANCES ─── */
+function renderBalances(){
+  const ov=document.getElementById('open-val');const cv=document.getElementById('close-val');
+  if(openingBalance!==null){ov.textContent='R '+fmtAmt(openingBalance);ov.style.color=openingBalance>=0?'var(--green)':'var(--red)';}
+  else{ov.textContent='— not found';ov.style.color='var(--text3)';}
+  if(closingBalance!==null){cv.textContent='R '+fmtAmt(closingBalance);cv.style.color=closingBalance>=0?'var(--green)':'var(--red)';}
+  else{cv.textContent='— not found';cv.style.color='var(--text3)';}
+}
+function editBalance(w){
+  balEditTarget=w;
+  document.getElementById('bal-modal-title').textContent=w==='open'?'Opening Balance':'Closing Balance';
+  const cur=w==='open'?openingBalance:closingBalance;
+  document.getElementById('bal-input').value=cur!==null?cur:'';
+  document.getElementById('bal-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('bal-input').focus(),50);
+}
+function closeBalModal(){document.getElementById('bal-modal').classList.remove('open');}
+function saveBalance(){
+  const v=parseFloat(document.getElementById('bal-input').value);
+  if(isNaN(v)){alert('Enter a valid number.');return;}
+  if(balEditTarget==='open')openingBalance=v;else closingBalance=v;
+  renderBalances();renderTable();closeBalModal();
+}
 
-  function renderStats() {
-    const d = allRows;
-    const credits = d.filter(r => r.amount >= 0).reduce((s,r) => s + r.amount, 0);
-    const debits  = d.filter(r => r.amount <  0).reduce((s,r) => s + r.amount, 0);
-    const net = credits + debits;
-    document.getElementById('stats-row').innerHTML = `
-      <div class="stat-card accent-card">
-        <div class="stat-label">Transactions</div>
-        <div class="stat-val accent">${d.length}</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Total Credits</div>
-        <div class="stat-val credit">R ${fmtAmt(credits)}</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Total Debits</div>
-        <div class="stat-val debit">R ${fmtAmt(Math.abs(debits))}</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Net Movement</div>
-        <div class="stat-val ${net >= 0 ? 'credit' : 'debit'}">${net >= 0 ? '+' : '−'}R ${fmtAmt(Math.abs(net))}</div>
-      </div>`;
-  }
+/* ─── CATEGORIES ─── */
+function openCatManager(){renderCatList();document.getElementById('cat-modal').classList.add('open');document.getElementById('new-cat-input').value='';}
+function closeCatModal(){document.getElementById('cat-modal').classList.remove('open');syncCatOptions();populateCatFilter();}
+function renderCatList(){
+  document.getElementById('cat-list').innerHTML=categories.map((c,i)=>`
+    <div class="cat-item"><span class="cat-item-name">${esc(c)}</span>
+      <button class="icon-btn" onclick="renameCategory(${i})" title="Rename" style="width:24px;height:24px"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+      <button class="icon-btn del" onclick="deleteCategory(${i})" title="Delete" style="width:24px;height:24px"><svg viewBox="0 0 24 24"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>
+    </div>`).join('');
+}
+function addCategory(){const v=document.getElementById('new-cat-input').value.trim();if(!v)return;if(categories.includes(v)){alert('Already exists.');return;}categories.push(v);document.getElementById('new-cat-input').value='';renderCatList();}
+function deleteCategory(i){if(categories.length<=1){alert('Need at least one.');return;}const n=categories[i];if(!confirm(`Delete "${n}"? Rows → Other.`))return;allRows.forEach(r=>{if(r.category===n)r.category='Other';});categories.splice(i,1);renderCatList();}
+function renameCategory(i){const o=categories[i];const n=(prompt('Rename:',o)||'').trim();if(!n||n===o)return;if(categories.includes(n)){alert('Name exists.');return;}allRows.forEach(r=>{if(r.category===o)r.category=n;});categories[i]=n;renderCatList();}
+function syncCatOptions(){const d=[...new Set(allRows.map(r=>r.category).filter(Boolean))];d.forEach(c=>{if(!categories.includes(c))categories.push(c);});document.getElementById('m-cat').innerHTML=categories.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');}
+function populateCatFilter(){const s=document.getElementById('catFilter');const cur=s.value;s.innerHTML='<option value="">All categories</option>'+categories.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');if(cur)s.value=cur;}
 
-  function renderTable() {
-    const tbody = document.getElementById('tbody');
-    const slice = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
-    if (!slice.length) {
-      tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="big">◎</div>No transactions found</div></td></tr>`;
-      return;
-    }
-    tbody.innerHTML = slice.map(r => `
-      <tr>
-        <td>${esc(r.date||'—')}</td>
-        <td title="${esc(r.description)}">${esc(r.description||'—')}</td>
-        <td><span class="cat-badge">${esc(r.category||'Other')}</span></td>
-        <td class="${r.amount >= 0 ? 'amount-credit' : 'amount-debit'}" style="text-align:right;font-variant-numeric:tabular-nums">
-          ${r.amount >= 0 ? '+' : '−'}R ${fmtAmt(Math.abs(r.amount))}
-        </td>
-        <td>
-          <div class="actions-cell">
-            <button class="icon-btn" onclick="openEdit(${r.id})" title="Edit">
-              <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            </button>
-            <button class="icon-btn del" onclick="deleteRow(${r.id})" title="Delete">
-              <svg viewBox="0 0 24 24"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
-            </button>
-          </div>
-        </td>
-      </tr>`).join('');
-  }
+/* ─── FILTER & RENDER ─── */
+function filterRows(){
+  const q=(document.getElementById('search')?.value||'').toLowerCase();
+  const t=document.getElementById('typeFilter')?.value||'';
+  const c=document.getElementById('catFilter')?.value||'';
+  filtered=allRows.filter(r=>{
+    const mq=!q||(r.description||'').toLowerCase().includes(q)||(r.date||'').includes(q)||String(Math.abs(r.amount||0)).includes(q);
+    const mt=!t||(t==='credit'?r.amount>=0:r.amount<0);
+    const mc=!c||r.category===c;
+    return mq&&mt&&mc;
+  });
+  page=0;renderStats();renderTable();renderPagination();
+}
+function renderStats(){
+  const d=allRows;
+  const credits=d.filter(r=>r.amount>=0).reduce((s,r)=>s+r.amount,0);
+  const debits=d.filter(r=>r.amount<0).reduce((s,r)=>s+r.amount,0);
+  const net=credits+debits;
+  document.getElementById('stats-row').innerHTML=`
+    <div class="stat-card accent-card"><div class="stat-label">Transactions</div><div class="stat-val accent">${d.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Total Credits</div><div class="stat-val credit">R ${fmtAmt(credits)}</div></div>
+    <div class="stat-card"><div class="stat-label">Total Debits</div><div class="stat-val debit">R ${fmtAmt(Math.abs(debits))}</div></div>
+    <div class="stat-card"><div class="stat-label">Net Movement</div><div class="stat-val ${net>=0?'credit':'debit'}">${net>=0?'+':'−'}R ${fmtAmt(Math.abs(net))}</div></div>`;
+}
+function renderTable(){
+  const tbody=document.getElementById('tbody');
+  const allBals=computeRunningBalances(allRows);
+  const balMap={};allRows.forEach((r,i)=>{balMap[r.id]=allBals[i];});
+  const slice=filtered.slice(page*PAGE_SIZE,(page+1)*PAGE_SIZE);
+  if(!slice.length){tbody.innerHTML=`<tr><td colspan="6"><div class="empty-state"><div class="big">◎</div>No transactions found</div></td></tr>`;return;}
+  const noFilter=!document.getElementById('search')?.value&&!document.getElementById('typeFilter')?.value&&!document.getElementById('catFilter')?.value;
+  const isFirst=page===0;const isLast=page>=Math.ceil(filtered.length/PAGE_SIZE)-1;
+  let html='';
+  if(isFirst&&noFilter&&openingBalance!==null)
+    html+=`<tr class="bal-row"><td>—</td><td>Opening Balance</td><td></td><td></td><td style="text-align:right;font-family:'Syne',sans-serif;font-weight:700">R ${fmtAmt(openingBalance)}</td><td></td></tr>`;
+  html+=slice.map(r=>{
+    const bal=balMap[r.id];
+    const bc=bal!==null?`<span class="${bal>=0?'running-pos':'running-neg'}">R ${fmtAmt(Math.abs(bal))}${bal<0?' <small style="font-size:10px;opacity:0.7">OD</small>':''}</span>`:`<span class="running-na">—</span>`;
+    return`<tr>
+      <td>${esc(r.date||'—')}</td>
+      <td class="desc-cell" title="${esc(r.description)}">${esc(r.description||'—')}</td>
+      <td><span class="cat-badge">${esc(r.category||'Other')}</span></td>
+      <td class="${r.amount>=0?'amount-credit':'amount-debit'}" style="text-align:right;font-variant-numeric:tabular-nums">${r.amount>=0?'+':'−'}R ${fmtAmt(Math.abs(r.amount))}</td>
+      <td style="text-align:right">${bc}</td>
+      <td><div class="actions-cell">
+        <button class="icon-btn" onclick="openEdit(${r.id})" title="Edit"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+        <button class="icon-btn del" onclick="deleteRow(${r.id})" title="Delete"><svg viewBox="0 0 24 24"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+      </div></td></tr>`;
+  }).join('');
+  if(isLast&&noFilter&&closingBalance!==null)
+    html+=`<tr class="bal-row"><td>—</td><td>Closing Balance</td><td></td><td></td><td style="text-align:right;font-family:'Syne',sans-serif;font-weight:700">R ${fmtAmt(closingBalance)}</td><td></td></tr>`;
+  tbody.innerHTML=html;
+}
+function renderPagination(){
+  const total=filtered.length;const pages=Math.ceil(total/PAGE_SIZE);
+  const el=document.getElementById('pagination');
+  if(pages<=1){el.innerHTML=`<span>${total} row${total!==1?'s':''}</span><span></span>`;return;}
+  el.innerHTML=`<span>Showing ${page*PAGE_SIZE+1}–${Math.min((page+1)*PAGE_SIZE,total)} of ${total}</span><div class="pag-btns"><button class="btn" onclick="goPage(${page-1})" ${page===0?'disabled':''} style="padding:5px 10px">←</button><button class="btn" onclick="goPage(${page+1})" ${page>=pages-1?'disabled':''} style="padding:5px 10px">→</button></div>`;
+}
+function goPage(n){page=n;renderTable();renderPagination();}
 
-  function renderPagination() {
-    const total = filtered.length;
-    const pages = Math.ceil(total / PAGE_SIZE);
-    const el = document.getElementById('pagination');
-    if (pages <= 1) { el.innerHTML = `<span>${total} row${total !== 1 ? 's' : ''}</span><span></span>`; return; }
-    el.innerHTML = `
-      <span>Showing ${page * PAGE_SIZE + 1}–${Math.min((page + 1) * PAGE_SIZE, total)} of ${total}</span>
-      <div class="pag-btns">
-        <button class="btn" onclick="goPage(${page-1})" ${page===0?'disabled':''} style="padding:5px 10px">←</button>
-        <button class="btn" onclick="goPage(${page+1})" ${page>=pages-1?'disabled':''} style="padding:5px 10px">→</button>
-      </div>`;
-  }
+/* ─── CRUD ─── */
+function openAdd(){modalMode='add';editId=null;document.getElementById('modal-title').textContent='Add Transaction';['m-date','m-desc','m-amt'].forEach(id=>document.getElementById(id).value='');syncCatOptions();document.getElementById('modal').classList.add('open');setTimeout(()=>document.getElementById('m-date').focus(),50);}
+function openEdit(id){const r=allRows.find(x=>x.id===id);if(!r)return;modalMode='edit';editId=id;document.getElementById('modal-title').textContent='Edit Transaction';document.getElementById('m-date').value=r.date||'';document.getElementById('m-desc').value=r.description||'';syncCatOptions();document.getElementById('m-cat').value=r.category||categories[0];document.getElementById('m-amt').value=r.amount;document.getElementById('modal').classList.add('open');}
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+function saveModal(){
+  const date=document.getElementById('m-date').value.trim();
+  const description=document.getElementById('m-desc').value.trim();
+  const category=document.getElementById('m-cat').value;
+  const amount=parseFloat(document.getElementById('m-amt').value);
+  if(!date||!description||isNaN(amount)){alert('Fill in all fields.');return;}
+  if(modalMode==='add')allRows.unshift({id:Date.now(),date,description,category,amount});
+  else{const r=allRows.find(x=>x.id===editId);if(r)Object.assign(r,{date,description,category,amount});}
+  closeModal();populateCatFilter();filterRows();
+}
+function deleteRow(id){if(!confirm('Delete this transaction?'))return;allRows=allRows.filter(r=>r.id!==id);filterRows();}
 
-  function goPage(n) { page = n; renderTable(); renderPagination(); }
+/* ─── EXPORT CSV ─── */
+function exportCSV(){
+  const rows=filtered.length?filtered:allRows;
+  if(!rows.length){alert('No transactions to export.');return;}
+  const allBals=computeRunningBalances(allRows);
+  const balMap={};allRows.forEach((r,i)=>{balMap[r.id]=allBals[i];});
+  const BOM='\uFEFF';
+  const lines=['Date,Description,Category,Amount,Running Balance'];
+  if(openingBalance!==null)lines.unshift('Opening Balance,,,,'+openingBalance);
+  rows.forEach(r=>{const b=balMap[r.id];lines.push(`${q(r.date)},${q(r.description)},${q(r.category)},${r.amount},${b!==null?b:''}`);});
+  if(closingBalance!==null)lines.push('Closing Balance,,,,'+closingBalance);
+  const blob=new Blob([BOM+lines.join('\r\n')],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='bank_statement.csv';a.style.display='none';
+  document.body.appendChild(a);a.click();
+  setTimeout(()=>{document.body.removeChild(a);URL.revokeObjectURL(url);},200);
+}
+function resetAll(){allRows=[];filtered=[];openingBalance=null;closingBalance=null;document.getElementById('data-section').style.display='none';document.getElementById('upload-section').style.display='block';document.getElementById('fileinput').value='';document.getElementById('file-badge-wrap').innerHTML='';}
 
-  /* ─── CRUD ─── */
-  function openAdd() {
-    modalMode = 'add'; editId = null;
-    document.getElementById('modal-title').textContent = 'Add Transaction';
-    ['m-date','m-desc','m-amt'].forEach(id => document.getElementById(id).value = '');
-    syncCatOptions();
-    document.getElementById('modal').classList.add('open');
-    document.getElementById('m-date').focus();
-  }
-  function openEdit(id) {
-    const r = allRows.find(x => x.id === id);
-    if (!r) return;
-    modalMode = 'edit'; editId = id;
-    document.getElementById('modal-title').textContent = 'Edit Transaction';
-    document.getElementById('m-date').value = r.date || '';
-    document.getElementById('m-desc').value = r.description || '';
-    syncCatOptions();
-    document.getElementById('m-cat').value = r.category || categories[0];
-    document.getElementById('m-amt').value = r.amount;
-    document.getElementById('modal').classList.add('open');
-  }
-  function closeModal() { document.getElementById('modal').classList.remove('open'); }
-  function saveModal() {
-    const date = document.getElementById('m-date').value.trim();
-    const description = document.getElementById('m-desc').value.trim();
-    const category = document.getElementById('m-cat').value;
-    const amount = parseFloat(document.getElementById('m-amt').value);
-    if (!date || !description || isNaN(amount)) { alert('Please fill in all fields.'); return; }
-    if (modalMode === 'add') {
-      allRows.unshift({ id: Date.now(), date, description, category, amount });
-    } else {
-      const r = allRows.find(x => x.id === editId);
-      if (r) Object.assign(r, { date, description, category, amount });
-    }
-    closeModal();
-    populateCatFilter();
-    filterRows();
-  }
-  function deleteRow(id) {
-    if (!confirm('Delete this transaction?')) return;
-    allRows = allRows.filter(r => r.id !== id);
-    filterRows();
-  }
-
-  /* ─── EXPORT CSV (fixed cross-browser) ─── */
-  function exportCSV() {
-    const rows = filtered.length ? filtered : allRows;
-    if (!rows.length) { alert('No transactions to export.'); return; }
-
-    const BOM = '\uFEFF'; // UTF-8 BOM for Excel compatibility
-    const lines = ['Date,Description,Category,Amount'];
-    if (openingBalance !== null) lines.unshift(`Opening Balance,,,${openingBalance}`);
-    rows.forEach(r => lines.push(`${csvQ(r.date)},${csvQ(r.description)},${csvQ(r.category)},${r.amount}`));
-    if (closingBalance !== null) lines.push(`Closing Balance,,,${closingBalance}`);
-
-    const content = BOM + lines.join('\r\n');
-    const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
-
-    // Cross-browser download
-    if (navigator.msSaveBlob) {
-      navigator.msSaveBlob(blob, 'bank_statement.csv');
-      return;
-    }
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'bank_statement.csv';
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 200);
-  }
-
-  function resetAll() {
-    allRows = []; filtered = []; openingBalance = null; closingBalance = null;
-    document.getElementById('data-section').style.display = 'none';
-    document.getElementById('upload-section').style.display = 'block';
-    document.getElementById('fileinput').value = '';
-    document.getElementById('file-badge-wrap').innerHTML = '';
-  }
-
-  /* ─── UTILS ─── */
-  function fmtAmt(n) { return Math.abs(n).toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
-  function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-  function csvQ(s) { return '"' + String(s||'').replace(/"/g,'""') + '"'; }
+/* ─── UTILS ─── */
+function fmtAmt(n){return Math.abs(n).toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function q(s){return'"'+String(s||'').replace(/"/g,'""')+'"';}
 </script>
 </body>
 </html>
