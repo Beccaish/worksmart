@@ -324,7 +324,7 @@ async function handleFile(file){
    XHR-based API call — avoids fetch() CORS preflight
    so this works when opened directly from desktop
 ═══════════════════════════════════════════════════ */
-function callClaude(apiKey, b64pdf){
+async function callClaude(apiKey, b64pdf){
   return new Promise((resolve, reject)=>{
     const PROMPT=`Extract ALL transactions from this bank statement PDF.
 Return ONLY a valid JSON object — no markdown, no backticks, no explanation.
@@ -346,48 +346,52 @@ Extract EVERY transaction row. openingBalance/closingBalance from statement if s
       ]}]
     });
 
-    const xhr=new XMLHttpRequest();
-    xhr.open('POST','https://api.anthropic.com/v1/messages',true);
-    xhr.setRequestHeader('Content-Type','application/json');
-    xhr.setRequestHeader('x-api-key',apiKey);
-    xhr.setRequestHeader('anthropic-version','2023-06-01');
-    xhr.setRequestHeader('anthropic-dangerous-direct-browser-calls','true');
-    xhr.timeout=120000;
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-calls': 'true'
+        },
+        body
+      });
 
-    xhr.onload=function(){
-      try{
-        const data=JSON.parse(xhr.responseText);
-        if(xhr.status!==200){
-          const msg=data?.error?.message||'HTTP '+xhr.status;
-          if(xhr.status===401)return reject(new Error('Invalid API key — check console.anthropic.com/settings/keys'));
-          if(xhr.status===403)return reject(new Error('API key rejected — make sure it starts with sk-ant- and billing is active'));
-          if(xhr.status===429)return reject(new Error('Rate limit — wait 30 seconds and try again'));
-          if(xhr.status===400)return reject(new Error('Bad request: '+msg));
-          return reject(new Error(msg));
-        }
-        const raw=(data.content||[]).map(c=>c.text||'').join('');
-        if(!raw)return reject(new Error('Empty response from Claude — try again'));
-        const clean=raw.replace(/^```(?:json)?\s*/i,'').replace(/\s*```$/,'').trim();
-        let parsed;
-        try{parsed=JSON.parse(clean);}
-        catch{
-          const m=clean.match(/\{[\s\S]*\}/);
-          if(m)try{parsed=JSON.parse(m[0]);}catch{return reject(new Error('Could not parse response'));}
-          else return reject(new Error('No JSON in response: '+clean.slice(0,200)));
-        }
-        if(Array.isArray(parsed))return resolve({transactions:parsed,openingBalance:null,closingBalance:null});
-        if(!parsed.transactions)return reject(new Error('Unexpected response structure'));
-        parsed.transactions=parsed.transactions
-          .map(t=>({...t,amount:Math.round(parseFloat(t.amount)*100)/100}))
-          .filter(t=>!isNaN(t.amount));
-        resolve(parsed);
-      }catch(e){reject(new Error('Parse error: '+e.message));}
-    };
-    xhr.onerror=function(){
-      reject(new Error('Network error — check your internet connection. If this file is open from your desktop, your browser may be blocking the request. Try opening it in Chrome or Edge.'));
-    };
-    xhr.ontimeout=function(){reject(new Error('Request timed out — try again'));};
-    xhr.send(body);
+      if (!res.ok) {
+        const eb = await res.json().catch(()=>({}));
+        const msg = eb?.error?.message || 'HTTP ' + res.status;
+        if (res.status === 401) return reject(new Error('Invalid API key — get yours at console.anthropic.com/settings/keys'));
+        if (res.status === 403) return reject(new Error('API key not authorised — check billing is active at console.anthropic.com'));
+        if (res.status === 429) return reject(new Error('Rate limit — wait 30 seconds and try again'));
+        if (res.status === 400) return reject(new Error('Bad request: ' + msg));
+        return reject(new Error('API error: ' + msg));
+      }
+
+      const data = await res.json();
+      const raw = (data.content||[]).map(c=>c.text||'').join('');
+      if (!raw) return reject(new Error('Empty response from Claude — try again'));
+      const clean = raw.replace(/^```(?:json)?\s*/i,'').replace(/\s*```$/,'').trim();
+      let parsed;
+      try { parsed = JSON.parse(clean); }
+      catch {
+        const m = clean.match(/\{[\s\S]*\}/);
+        if (m) try { parsed = JSON.parse(m[0]); } catch { return reject(new Error('Could not parse response')); }
+        else return reject(new Error('No JSON in response: ' + clean.slice(0,200)));
+      }
+      if (Array.isArray(parsed)) return resolve({transactions:parsed,openingBalance:null,closingBalance:null});
+      if (!parsed.transactions) return reject(new Error('Unexpected response structure'));
+      parsed.transactions = parsed.transactions
+        .map(t=>({...t, amount:Math.round(parseFloat(t.amount)*100)/100}))
+        .filter(t=>!isNaN(t.amount));
+      resolve(parsed);
+    } catch(e) {
+      if (e.name === 'TypeError' && e.message.includes('fetch')) {
+        reject(new Error('Could not reach Anthropic API. Check your internet connection.'));
+      } else {
+        reject(e);
+      }
+    }
   });
 }
 
