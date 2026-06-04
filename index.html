@@ -14,7 +14,6 @@
     --border2: #383838;
     --accent: #c5f135;
     --accent-dim: rgba(197,241,53,0.12);
-    --accent-hover: rgba(197,241,53,0.18);
     --text: #f0f0f0;
     --text2: #888;
     --text3: #555;
@@ -26,120 +25,81 @@
     --radius-lg: 14px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'DM Mono', monospace;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    font-size: 13px;
-  }
+  body { font-family: 'DM Mono', monospace; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 13px; }
 
-  /* HEADER */
   header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 18px 32px;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg);
-    position: sticky;
-    top: 0;
-    z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 32px; border-bottom: 1px solid var(--border);
+    background: var(--bg); position: sticky; top: 0; z-index: 50;
   }
-  .logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 18px;
-    letter-spacing: -0.02em;
-    color: var(--text);
-  }
+  .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: -0.02em; }
   .logo span { color: var(--accent); }
-  .header-tag {
-    font-size: 11px;
-    color: var(--text3);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
+  .header-tag { font-size: 11px; color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase; }
 
-  /* LAYOUT */
   main { max-width: 1200px; margin: 0 auto; padding: 32px 32px 64px; }
 
-  /* UPLOAD ZONE */
-  #upload-section { margin-bottom: 32px; }
   .upload-zone {
-    border: 1.5px dashed var(--border2);
-    border-radius: var(--radius-lg);
-    padding: 56px 32px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    background: var(--surface);
-    position: relative;
-    overflow: hidden;
+    border: 1.5px dashed var(--border2); border-radius: var(--radius-lg);
+    padding: 56px 32px; text-align: center; cursor: pointer;
+    transition: all 0.2s ease; background: var(--surface); position: relative; overflow: hidden;
   }
   .upload-zone::before {
-    content: '';
-    position: absolute;
-    inset: 0;
+    content: ''; position: absolute; inset: 0;
     background: radial-gradient(ellipse at 50% 0%, rgba(197,241,53,0.04) 0%, transparent 70%);
     pointer-events: none;
   }
-  .upload-zone:hover, .upload-zone.drag {
-    border-color: var(--accent);
-    background: var(--surface2);
-  }
+  .upload-zone:hover, .upload-zone.drag { border-color: var(--accent); background: var(--surface2); }
   .upload-icon {
-    width: 52px; height: 52px;
-    border: 1.5px solid var(--border2);
-    border-radius: var(--radius);
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 16px;
-    font-size: 22px;
-    background: var(--surface2);
-    transition: all 0.2s;
+    width: 52px; height: 52px; border: 1.5px solid var(--border2); border-radius: var(--radius);
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;
+    background: var(--surface2); transition: all 0.2s;
   }
   .upload-zone:hover .upload-icon { border-color: var(--accent); color: var(--accent); }
   .upload-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 6px; }
   .upload-sub { color: var(--text2); font-size: 12px; }
   .upload-sub strong { color: var(--accent); font-weight: 500; }
 
-  /* LOADING */
   #loading {
-    display: none;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 48px;
-    text-align: center;
-    background: var(--surface);
-    margin-bottom: 32px;
+    display: none; border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 48px; text-align: center; background: var(--surface); margin-bottom: 32px;
   }
   .pulse-ring {
-    width: 48px; height: 48px;
-    border: 2px solid var(--border2);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin: 0 auto 16px;
+    width: 48px; height: 48px; border: 2px solid var(--border2); border-top-color: var(--accent);
+    border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .loading-label { color: var(--text2); font-size: 13px; }
-  .loading-label span { color: var(--accent); }
 
-  /* STATS */
+  /* BALANCES STRIP */
+  .balance-strip {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;
+    animation: fadeUp 0.3s ease both;
+  }
+  .balance-card {
+    background: var(--surface); border: 1px solid var(--border2);
+    border-radius: var(--radius); padding: 14px 18px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .balance-left { display: flex; flex-direction: column; gap: 4px; }
+  .balance-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; }
+  .balance-val { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; }
+  .balance-edit-btn {
+    background: none; border: 1px solid var(--border); border-radius: 6px;
+    color: var(--text3); padding: 4px 8px; cursor: pointer; font-size: 11px;
+    font-family: 'DM Mono', monospace; transition: all 0.15s;
+  }
+  .balance-edit-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .balance-input {
+    background: var(--bg); border: 1px solid var(--accent); border-radius: 6px;
+    color: var(--text); font-family: 'DM Mono', monospace; font-size: 13px;
+    padding: 4px 8px; width: 130px; outline: none;
+  }
+
   .stats-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 24px;
-    animation: fadeUp 0.4s ease both;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+    margin-bottom: 20px; animation: fadeUp 0.4s ease both;
   }
-  @keyframes fadeUp { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform: none; } }
-  .stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px 20px;
-  }
+  @keyframes fadeUp { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: none; } }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; }
   .stat-card.accent-card { border-color: rgba(197,241,53,0.25); background: var(--accent-dim); }
   .stat-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
   .stat-val { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; }
@@ -147,197 +107,80 @@
   .stat-val.debit { color: var(--red); }
   .stat-val.accent { color: var(--accent); }
 
-  /* TOOLBAR */
-  .toolbar {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-bottom: 14px;
-    animation: fadeUp 0.4s 0.1s ease both;
-  }
+  .toolbar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; animation: fadeUp 0.4s 0.1s ease both; }
   .toolbar-left { display: flex; gap: 10px; flex: 1; flex-wrap: wrap; }
   .toolbar-right { display: flex; gap: 8px; }
-  input[type=text], select {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    padding: 8px 12px;
-    outline: none;
-    transition: border-color 0.15s;
+  input[type=text], input[type=number], select {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    color: var(--text); font-family: 'DM Mono', monospace; font-size: 12px;
+    padding: 8px 12px; outline: none; transition: border-color 0.15s;
   }
-  input[type=text]:focus, select:focus { border-color: var(--border2); }
-  input[type=text] { min-width: 220px; }
+  input[type=text]:focus, input[type=number]:focus, select:focus { border-color: var(--border2); }
+  input[type=text] { min-width: 200px; }
   select { cursor: pointer; }
   select option { background: #1e1e1e; }
 
   .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 14px;
-    border-radius: var(--radius);
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text2);
-    transition: all 0.15s;
-    white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px;
+    border-radius: var(--radius); font-family: 'DM Mono', monospace; font-size: 12px;
+    font-weight: 500; cursor: pointer; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text2); transition: all 0.15s; white-space: nowrap;
   }
   .btn:hover { border-color: var(--border2); color: var(--text); background: var(--surface2); }
   .btn.primary { background: var(--accent); color: #000; border-color: transparent; font-weight: 700; }
   .btn.primary:hover { background: #d4f54a; }
-  .btn.danger { color: var(--red); border-color: rgba(248,113,113,0.25); }
+  .btn.danger { color: var(--red); border-color: rgba(248,113,113,0.2); }
   .btn.danger:hover { background: var(--red-dim); }
   .btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
-  /* TABLE */
-  .table-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    animation: fadeUp 0.4s 0.15s ease both;
-  }
+  .table-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; animation: fadeUp 0.4s 0.15s ease both; }
   .table-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; }
   thead { background: var(--surface2); }
-  th {
-    padding: 11px 16px;
-    text-align: left;
-    font-size: 10px;
-    color: var(--text3);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-weight: 500;
-    border-bottom: 1px solid var(--border);
-    white-space: nowrap;
-  }
-  td {
-    padding: 11px 16px;
-    border-bottom: 1px solid var(--border);
-    color: var(--text);
-    font-size: 12px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 220px;
-  }
+  th { padding: 11px 16px; text-align: left; font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  td { padding: 10px 16px; border-bottom: 1px solid var(--border); color: var(--text); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 240px; }
   tr:last-child td { border-bottom: none; }
   tbody tr { transition: background 0.1s; }
   tbody tr:hover td { background: var(--surface2); }
   .amount-credit { color: var(--green); }
   .amount-debit { color: var(--red); }
-
-  .cat-badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 20px;
-    font-size: 10px;
-    background: var(--surface2);
-    color: var(--text2);
-    border: 1px solid var(--border);
-    white-space: nowrap;
-  }
-
-  .actions-cell { display: flex; gap: 6px; }
-  .icon-btn {
-    width: 28px; height: 28px;
-    display: flex; align-items: center; justify-content: center;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    background: transparent;
-    cursor: pointer;
-    color: var(--text3);
-    transition: all 0.15s;
-    font-size: 13px;
-  }
+  .cat-badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 10px; background: var(--surface2); color: var(--text2); border: 1px solid var(--border); white-space: nowrap; }
+  .actions-cell { display: flex; gap: 6px; justify-content: center; }
+  .icon-btn { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 6px; border: 1px solid var(--border); background: transparent; cursor: pointer; color: var(--text3); transition: all 0.15s; }
   .icon-btn:hover { border-color: var(--border2); color: var(--text); background: var(--surface2); }
   .icon-btn.del:hover { border-color: rgba(248,113,113,0.3); color: var(--red); background: var(--red-dim); }
   .icon-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-
   .empty-state { padding: 48px; text-align: center; color: var(--text3); }
   .empty-state .big { font-size: 28px; margin-bottom: 10px; }
 
-  /* PAGINATION */
-  .pagination {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    border-top: 1px solid var(--border);
-    font-size: 11px;
-    color: var(--text3);
-  }
+  .pagination { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text3); }
   .pag-btns { display: flex; gap: 6px; }
 
   /* MODAL */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    z-index: 100;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(2px);
-  }
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
   .modal-overlay.open { display: flex; }
-  .modal {
-    background: var(--surface);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius-lg);
-    padding: 28px;
-    width: 400px;
-    max-width: 95vw;
-    animation: popIn 0.2s ease;
-  }
+  .modal { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-lg); padding: 28px; width: 420px; max-width: 95vw; animation: popIn 0.2s ease; }
   @keyframes popIn { from { opacity:0; transform: scale(0.95); } to { opacity:1; transform: none; } }
-  .modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
   .modal-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; }
-  .modal-close { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 18px; line-height: 1; padding: 2px; }
+  .modal-close { background: none; border: none; color: var(--text3); cursor: pointer; font-size: 20px; line-height: 1; }
   .modal-close:hover { color: var(--text); }
   .form-field { margin-bottom: 14px; }
   .form-label { display: block; font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
-  .form-input {
-    width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius);
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    padding: 9px 12px;
-    outline: none;
-    transition: border-color 0.15s;
-  }
+  .form-input { width: 100%; background: var(--bg); border: 1px solid var(--border2); border-radius: var(--radius); color: var(--text); font-family: 'DM Mono', monospace; font-size: 12px; padding: 9px 12px; outline: none; transition: border-color 0.15s; }
   .form-input:focus { border-color: var(--accent); }
   .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
 
-  /* FILE BADGE */
-  .file-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 12px;
-    background: var(--accent-dim);
-    border: 1px solid rgba(197,241,53,0.2);
-    border-radius: 20px;
-    font-size: 11px;
-    color: var(--accent);
-    margin-bottom: 20px;
-  }
+  /* CATEGORY MANAGER */
+  .cat-manager { border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); padding: 10px; max-height: 200px; overflow-y: auto; }
+  .cat-item { display: flex; align-items: center; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--border); }
+  .cat-item:last-child { border-bottom: none; }
+  .cat-item-name { flex: 1; font-size: 12px; }
+  .cat-add-row { display: flex; gap: 6px; margin-top: 8px; }
+  .cat-add-row input { flex: 1; }
+
+  .file-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; background: var(--accent-dim); border: 1px solid rgba(197,241,53,0.2); border-radius: 20px; font-size: 11px; color: var(--accent); margin-bottom: 20px; }
 
   #data-section { display: none; }
 
@@ -345,8 +188,8 @@
     main { padding: 16px; }
     header { padding: 14px 16px; }
     .stats-row { grid-template-columns: repeat(2,1fr); }
+    .balance-strip { grid-template-columns: 1fr; }
     .toolbar { flex-direction: column; align-items: stretch; }
-    .toolbar-right { flex-wrap: wrap; }
     input[type=text] { min-width: unset; width: 100%; }
   }
 </style>
@@ -360,13 +203,10 @@
 
 <main>
 
-  <!-- UPLOAD -->
   <div id="upload-section">
     <div class="upload-zone" id="dropzone"
       onclick="document.getElementById('fileinput').click()"
-      ondragover="onDrag(event,true)"
-      ondragleave="onDrag(event,false)"
-      ondrop="onDrop(event)">
+      ondragover="onDrag(event,true)" ondragleave="onDrag(event,false)" ondrop="onDrop(event)">
       <div class="upload-icon">
         <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/>
@@ -379,17 +219,32 @@
     <input type="file" id="fileinput" accept=".pdf" style="display:none" onchange="handleFile(this.files[0])">
   </div>
 
-  <!-- LOADING -->
   <div id="loading">
     <div class="pulse-ring"></div>
-    <div class="loading-label">Parsing transactions with <span>AI</span>…</div>
+    <div style="color:var(--text2);font-size:13px">Parsing transactions with <span style="color:var(--accent)">AI</span>…</div>
     <div style="color:var(--text3);font-size:11px;margin-top:8px">This may take 10–20 seconds depending on statement length</div>
   </div>
 
-  <!-- DATA SECTION -->
   <div id="data-section">
-
     <div id="file-badge-wrap"></div>
+
+    <!-- OPENING / CLOSING BALANCES -->
+    <div class="balance-strip" id="balance-strip">
+      <div class="balance-card">
+        <div class="balance-left">
+          <div class="balance-label">Opening Balance</div>
+          <div class="balance-val" id="open-val" style="color:var(--text2)">—</div>
+        </div>
+        <button class="balance-edit-btn" onclick="editBalance('open')">Edit</button>
+      </div>
+      <div class="balance-card">
+        <div class="balance-left">
+          <div class="balance-label">Closing Balance</div>
+          <div class="balance-val" id="close-val" style="color:var(--text2)">—</div>
+        </div>
+        <button class="balance-edit-btn" onclick="editBalance('close')">Edit</button>
+      </div>
+    </div>
 
     <!-- STATS -->
     <div class="stats-row" id="stats-row"></div>
@@ -408,11 +263,15 @@
         </select>
       </div>
       <div class="toolbar-right">
+        <button class="btn" onclick="openCatManager()">
+          <svg viewBox="0 0 24 24"><circle cx="9" cy="5" r="1" fill="currentColor"/><circle cx="9" cy="12" r="1" fill="currentColor"/><circle cx="9" cy="19" r="1" fill="currentColor"/><line x1="14" y1="5" x2="20" y2="5"/><line x1="14" y1="12" x2="20" y2="12"/><line x1="14" y1="19" x2="20" y2="19"/></svg>
+          Categories
+        </button>
         <button class="btn" onclick="openAdd()">
           <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           Add row
         </button>
-        <button class="btn primary" onclick="exportCSV()">
+        <button class="btn primary" id="export-btn" onclick="exportCSV()">
           <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Export CSV
         </button>
@@ -432,7 +291,7 @@
               <th style="width:110px">Date</th>
               <th>Description</th>
               <th style="width:120px">Category</th>
-              <th style="width:110px;text-align:right">Amount</th>
+              <th style="width:120px;text-align:right">Amount</th>
               <th style="width:80px;text-align:center">Actions</th>
             </tr>
           </thead>
@@ -441,11 +300,10 @@
       </div>
       <div class="pagination" id="pagination"></div>
     </div>
-
   </div>
 </main>
 
-<!-- MODAL -->
+<!-- TRANSACTION MODAL -->
 <div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
   <div class="modal">
     <div class="modal-header">
@@ -462,11 +320,7 @@
     </div>
     <div class="form-field">
       <label class="form-label">Category</label>
-      <select class="form-input" id="m-cat">
-        <option>Groceries</option><option>Utilities</option><option>Salary</option>
-        <option>Transfer</option><option>Entertainment</option><option>Transport</option>
-        <option>Healthcare</option><option>Insurance</option><option>Other</option>
-      </select>
+      <select class="form-input" id="m-cat"></select>
     </div>
     <div class="form-field">
       <label class="form-label">Amount (positive = credit, negative = debit)</label>
@@ -479,44 +333,76 @@
   </div>
 </div>
 
+<!-- CATEGORY MANAGER MODAL -->
+<div class="modal-overlay" id="cat-modal" onclick="if(event.target===this)closeCatModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Manage Categories</div>
+      <button class="modal-close" onclick="closeCatModal()">✕</button>
+    </div>
+    <p style="font-size:11px;color:var(--text3);margin-bottom:12px">Edit, delete or add custom categories. Changes apply to all dropdowns and the category filter.</p>
+    <div class="cat-manager" id="cat-list"></div>
+    <div class="cat-add-row">
+      <input type="text" id="new-cat-input" placeholder="New category name…" onkeydown="if(event.key==='Enter')addCategory()" style="font-size:12px">
+      <button class="btn primary" onclick="addCategory()" style="padding:7px 14px">Add</button>
+    </div>
+    <div class="modal-actions">
+      <button class="btn primary" onclick="closeCatModal()">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- BALANCE EDIT MODAL -->
+<div class="modal-overlay" id="bal-modal" onclick="if(event.target===this)closeBalModal()">
+  <div class="modal" style="width:320px">
+    <div class="modal-header">
+      <div class="modal-title" id="bal-modal-title">Opening Balance</div>
+      <button class="modal-close" onclick="closeBalModal()">✕</button>
+    </div>
+    <div class="form-field">
+      <label class="form-label">Balance Amount</label>
+      <input class="form-input" type="number" id="bal-input" step="0.01" placeholder="0.00">
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeBalModal()">Cancel</button>
+      <button class="btn primary" onclick="saveBalance()">Save</button>
+    </div>
+  </div>
+</div>
+
 <script>
-  const CATS = ['Groceries','Utilities','Salary','Transfer','Entertainment','Transport','Healthcare','Insurance','Other'];
+  /* ─── STATE ─── */
   let allRows = [], filtered = [], page = 0, modalMode = 'add', editId = null;
+  let openingBalance = null, closingBalance = null, balEditTarget = null;
   const PAGE_SIZE = 25;
+  let categories = ['Groceries','Utilities','Salary','Transfer','Entertainment','Transport','Healthcare','Insurance','Other'];
 
-  /* ── DRAG & DROP ── */
-  function onDrag(e, on) {
-    e.preventDefault();
-    document.getElementById('dropzone').classList.toggle('drag', on);
-  }
-  function onDrop(e) {
-    e.preventDefault();
-    onDrag(e, false);
-    if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
-  }
+  /* ─── DRAG & DROP ─── */
+  function onDrag(e, on) { e.preventDefault(); document.getElementById('dropzone').classList.toggle('drag', on); }
+  function onDrop(e) { e.preventDefault(); onDrag(e, false); if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); }
 
-  /* ── FILE HANDLING ── */
+  /* ─── FILE HANDLING ─── */
   async function handleFile(file) {
-    if (!file || file.type !== 'application/pdf') {
-      alert('Please upload a PDF file.');
-      return;
-    }
+    if (!file || file.type !== 'application/pdf') { alert('Please upload a PDF file.'); return; }
     const reader = new FileReader();
     reader.onload = async (ev) => {
       document.getElementById('upload-section').style.display = 'none';
       document.getElementById('loading').style.display = 'block';
       const b64 = ev.target.result.split(',')[1];
       try {
-        const rows = await parseWithClaude(b64);
-        allRows = rows.map((r, i) => ({ ...r, id: Date.now() + i }));
-        populateCatFilter();
+        const result = await parseWithClaude(b64);
+        allRows = result.transactions.map((r, i) => ({ ...r, id: Date.now() + i }));
+        if (result.openingBalance !== null) { openingBalance = result.openingBalance; }
+        if (result.closingBalance !== null) { closingBalance = result.closingBalance; }
+        renderBalances();
+        syncCatOptions();
         filterRows();
         document.getElementById('loading').style.display = 'none';
         document.getElementById('data-section').style.display = 'block';
         document.getElementById('file-badge-wrap').innerHTML =
           `<div class="file-badge">
             <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
-            ${file.name} &nbsp;·&nbsp; ${allRows.length} transactions found
+            ${esc(file.name)} &nbsp;·&nbsp; ${allRows.length} transactions extracted
           </div>`;
       } catch (err) {
         document.getElementById('loading').style.display = 'none';
@@ -527,7 +413,7 @@
     reader.readAsDataURL(file);
   }
 
-  /* ── CLAUDE API ── */
+  /* ─── CLAUDE API ─── */
   async function parseWithClaude(b64) {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -535,19 +421,22 @@
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 4000,
-        system: `You are a bank statement parser. Extract ALL transactions from the PDF.
-Return ONLY a valid JSON array — no markdown, no backticks, no explanation.
-Each object must have:
-- date: string (YYYY-MM-DD or original format)
-- description: string (payee/narrative, keep concise)
-- category: one of [Groceries, Utilities, Salary, Transfer, Entertainment, Transport, Healthcare, Insurance, Other]
-- amount: number (positive for credits/deposits, negative for debits/payments)
-Categorise intelligently from the description. If no transactions found, return [].`,
+        system: `You are a bank statement parser. Extract ALL transactions and balance information from the PDF.
+Return ONLY a valid JSON object — no markdown, no backticks, no explanation.
+The object must have:
+- openingBalance: number or null (opening/brought forward balance if shown)
+- closingBalance: number or null (closing/carried forward balance if shown)
+- transactions: array of objects, each with:
+  - date: string (YYYY-MM-DD or original format found)
+  - description: string (payee/narrative, keep concise)
+  - category: one of [Groceries, Utilities, Salary, Transfer, Entertainment, Transport, Healthcare, Insurance, Other]
+  - amount: number (positive for credits/deposits, negative for debits/payments)
+Categorise intelligently from the description.`,
         messages: [{
           role: 'user',
           content: [
             { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: b64 } },
-            { type: 'text', text: 'Extract all transactions. Return only a JSON array.' }
+            { type: 'text', text: 'Extract all transactions and balances. Return only the JSON object.' }
           ]
         }]
       })
@@ -559,21 +448,126 @@ Categorise intelligently from the description. If no transactions found, return 
     let parsed;
     try { parsed = JSON.parse(clean); }
     catch {
-      const m = clean.match(/\[[\s\S]*\]/);
+      const m = clean.match(/\{[\s\S]*\}/);
       if (m) parsed = JSON.parse(m[0]);
       else throw new Error('Could not parse AI response as JSON.');
     }
-    if (!Array.isArray(parsed)) throw new Error('Unexpected response format.');
+    if (!parsed.transactions) {
+      if (Array.isArray(parsed)) return { transactions: parsed, openingBalance: null, closingBalance: null };
+      throw new Error('Unexpected response format.');
+    }
     return parsed;
   }
 
-  /* ── FILTER & RENDER ── */
+  /* ─── BALANCES ─── */
+  function renderBalances() {
+    const ov = document.getElementById('open-val');
+    const cv = document.getElementById('close-val');
+    if (openingBalance !== null) {
+      ov.textContent = 'R ' + fmtAmt(openingBalance);
+      ov.style.color = openingBalance >= 0 ? 'var(--green)' : 'var(--red)';
+    } else {
+      ov.textContent = '— not found';
+      ov.style.color = 'var(--text3)';
+    }
+    if (closingBalance !== null) {
+      cv.textContent = 'R ' + fmtAmt(closingBalance);
+      cv.style.color = closingBalance >= 0 ? 'var(--green)' : 'var(--red)';
+    } else {
+      cv.textContent = '— not found';
+      cv.style.color = 'var(--text3)';
+    }
+  }
+
+  function editBalance(which) {
+    balEditTarget = which;
+    document.getElementById('bal-modal-title').textContent = which === 'open' ? 'Opening Balance' : 'Closing Balance';
+    const current = which === 'open' ? openingBalance : closingBalance;
+    document.getElementById('bal-input').value = current !== null ? current : '';
+    document.getElementById('bal-modal').classList.add('open');
+    document.getElementById('bal-input').focus();
+  }
+  function closeBalModal() { document.getElementById('bal-modal').classList.remove('open'); }
+  function saveBalance() {
+    const v = parseFloat(document.getElementById('bal-input').value);
+    if (isNaN(v)) { alert('Please enter a valid number.'); return; }
+    if (balEditTarget === 'open') openingBalance = v;
+    else closingBalance = v;
+    renderBalances();
+    closeBalModal();
+  }
+
+  /* ─── CATEGORY MANAGER ─── */
+  function openCatManager() {
+    renderCatList();
+    document.getElementById('cat-modal').classList.add('open');
+    document.getElementById('new-cat-input').value = '';
+  }
+  function closeCatModal() {
+    document.getElementById('cat-modal').classList.remove('open');
+    syncCatOptions();
+    populateCatFilter();
+  }
+  function renderCatList() {
+    document.getElementById('cat-list').innerHTML = categories.map((c, i) => `
+      <div class="cat-item">
+        <span class="cat-item-name">${esc(c)}</span>
+        <button class="icon-btn" onclick="renameCategory(${i})" title="Rename" style="width:24px;height:24px">
+          <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </button>
+        <button class="icon-btn del" onclick="deleteCategory(${i})" title="Delete" style="width:24px;height:24px">
+          <svg viewBox="0 0 24 24"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+        </button>
+      </div>`).join('');
+  }
+  function addCategory() {
+    const v = document.getElementById('new-cat-input').value.trim();
+    if (!v) return;
+    if (categories.includes(v)) { alert('Category already exists.'); return; }
+    categories.push(v);
+    document.getElementById('new-cat-input').value = '';
+    renderCatList();
+  }
+  function deleteCategory(i) {
+    if (categories.length <= 1) { alert('At least one category required.'); return; }
+    const name = categories[i];
+    if (!confirm(`Delete "${name}"? Transactions with this category will be set to "Other".`)) return;
+    allRows.forEach(r => { if (r.category === name) r.category = 'Other'; });
+    categories.splice(i, 1);
+    renderCatList();
+  }
+  function renameCategory(i) {
+    const old = categories[i];
+    const newName = prompt('Rename category:', old);
+    if (!newName || newName.trim() === old) return;
+    const trimmed = newName.trim();
+    if (categories.includes(trimmed)) { alert('Name already exists.'); return; }
+    allRows.forEach(r => { if (r.category === old) r.category = trimmed; });
+    categories[i] = trimmed;
+    renderCatList();
+  }
+  function syncCatOptions() {
+    // Merge categories from data + custom list, dedup
+    const fromData = [...new Set(allRows.map(r => r.category).filter(Boolean))];
+    fromData.forEach(c => { if (!categories.includes(c)) categories.push(c); });
+    const opts = categories.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
+    document.getElementById('m-cat').innerHTML = opts;
+  }
+  function populateCatFilter() {
+    const sel = document.getElementById('catFilter');
+    const cur = sel.value;
+    sel.innerHTML = '<option value="">All categories</option>' +
+      categories.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('');
+    if (cur) sel.value = cur;
+  }
+
+  /* ─── FILTER & RENDER ─── */
   function filterRows() {
     const q = (document.getElementById('search')?.value || '').toLowerCase();
     const t = document.getElementById('typeFilter')?.value || '';
     const c = document.getElementById('catFilter')?.value || '';
     filtered = allRows.filter(r => {
-      const mq = !q || (r.description || '').toLowerCase().includes(q) || (r.date || '').includes(q) || String(Math.abs(r.amount || 0)).includes(q);
+      const mq = !q || (r.description||'').toLowerCase().includes(q) || (r.date||'').includes(q) || String(Math.abs(r.amount||0)).includes(q);
       const mt = !t || (t === 'credit' ? r.amount >= 0 : r.amount < 0);
       const mc = !c || r.category === c;
       return mq && mt && mc;
@@ -585,27 +579,26 @@ Categorise intelligently from the description. If no transactions found, return 
   }
 
   function renderStats() {
-    const src = filtered.length || !document.getElementById('search')?.value ? filtered : allRows;
-    const display = allRows;
-    const credits = display.filter(r => r.amount >= 0).reduce((s, r) => s + r.amount, 0);
-    const debits = display.filter(r => r.amount < 0).reduce((s, r) => s + r.amount, 0);
+    const d = allRows;
+    const credits = d.filter(r => r.amount >= 0).reduce((s,r) => s + r.amount, 0);
+    const debits  = d.filter(r => r.amount <  0).reduce((s,r) => s + r.amount, 0);
     const net = credits + debits;
     document.getElementById('stats-row').innerHTML = `
       <div class="stat-card accent-card">
         <div class="stat-label">Transactions</div>
-        <div class="stat-val accent">${display.length}</div>
+        <div class="stat-val accent">${d.length}</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Total Credits</div>
-        <div class="stat-val credit">+${fmtAmt(credits)}</div>
+        <div class="stat-val credit">R ${fmtAmt(credits)}</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Total Debits</div>
-        <div class="stat-val debit">${fmtAmt(debits)}</div>
+        <div class="stat-val debit">R ${fmtAmt(Math.abs(debits))}</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Net Balance</div>
-        <div class="stat-val ${net >= 0 ? 'credit' : 'debit'}">${net >= 0 ? '+' : ''}${fmtAmt(net)}</div>
+        <div class="stat-label">Net Movement</div>
+        <div class="stat-val ${net >= 0 ? 'credit' : 'debit'}">${net >= 0 ? '+' : '−'}R ${fmtAmt(Math.abs(net))}</div>
       </div>`;
   }
 
@@ -618,14 +611,14 @@ Categorise intelligently from the description. If no transactions found, return 
     }
     tbody.innerHTML = slice.map(r => `
       <tr>
-        <td>${esc(r.date || '—')}</td>
-        <td title="${esc(r.description)}">${esc(r.description || '—')}</td>
-        <td><span class="cat-badge">${esc(r.category || 'Other')}</span></td>
+        <td>${esc(r.date||'—')}</td>
+        <td title="${esc(r.description)}">${esc(r.description||'—')}</td>
+        <td><span class="cat-badge">${esc(r.category||'Other')}</span></td>
         <td class="${r.amount >= 0 ? 'amount-credit' : 'amount-debit'}" style="text-align:right;font-variant-numeric:tabular-nums">
-          ${r.amount >= 0 ? '+' : ''}${fmtAmt(r.amount)}
+          ${r.amount >= 0 ? '+' : '−'}R ${fmtAmt(Math.abs(r.amount))}
         </td>
         <td>
-          <div class="actions-cell" style="justify-content:center">
+          <div class="actions-cell">
             <button class="icon-btn" onclick="openEdit(${r.id})" title="Edit">
               <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
             </button>
@@ -645,29 +638,22 @@ Categorise intelligently from the description. If no transactions found, return 
     el.innerHTML = `
       <span>Showing ${page * PAGE_SIZE + 1}–${Math.min((page + 1) * PAGE_SIZE, total)} of ${total}</span>
       <div class="pag-btns">
-        <button class="btn" onclick="goPage(${page - 1})" ${page === 0 ? 'disabled style="opacity:0.35"' : ''} style="padding:5px 10px">←</button>
-        <button class="btn" onclick="goPage(${page + 1})" ${page >= pages - 1 ? 'disabled style="opacity:0.35"' : ''} style="padding:5px 10px">→</button>
+        <button class="btn" onclick="goPage(${page-1})" ${page===0?'disabled':''} style="padding:5px 10px">←</button>
+        <button class="btn" onclick="goPage(${page+1})" ${page>=pages-1?'disabled':''} style="padding:5px 10px">→</button>
       </div>`;
   }
 
   function goPage(n) { page = n; renderTable(); renderPagination(); }
 
-  function populateCatFilter() {
-    const cats = [...new Set(allRows.map(r => r.category).filter(Boolean))].sort();
-    const sel = document.getElementById('catFilter');
-    sel.innerHTML = '<option value="">All categories</option>' + cats.map(c => `<option>${c}</option>`).join('');
-  }
-
-  /* ── CRUD ── */
+  /* ─── CRUD ─── */
   function openAdd() {
     modalMode = 'add'; editId = null;
     document.getElementById('modal-title').textContent = 'Add Transaction';
-    ['m-date', 'm-desc', 'm-amt'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('m-cat').value = 'Other';
+    ['m-date','m-desc','m-amt'].forEach(id => document.getElementById(id).value = '');
+    syncCatOptions();
     document.getElementById('modal').classList.add('open');
     document.getElementById('m-date').focus();
   }
-
   function openEdit(id) {
     const r = allRows.find(x => x.id === id);
     if (!r) return;
@@ -675,13 +661,12 @@ Categorise intelligently from the description. If no transactions found, return 
     document.getElementById('modal-title').textContent = 'Edit Transaction';
     document.getElementById('m-date').value = r.date || '';
     document.getElementById('m-desc').value = r.description || '';
-    document.getElementById('m-cat').value = r.category || 'Other';
+    syncCatOptions();
+    document.getElementById('m-cat').value = r.category || categories[0];
     document.getElementById('m-amt').value = r.amount;
     document.getElementById('modal').classList.add('open');
   }
-
   function closeModal() { document.getElementById('modal').classList.remove('open'); }
-
   function saveModal() {
     const date = document.getElementById('m-date').value.trim();
     const description = document.getElementById('m-desc').value.trim();
@@ -698,39 +683,53 @@ Categorise intelligently from the description. If no transactions found, return 
     populateCatFilter();
     filterRows();
   }
-
   function deleteRow(id) {
     if (!confirm('Delete this transaction?')) return;
     allRows = allRows.filter(r => r.id !== id);
     filterRows();
   }
 
-  /* ── EXPORT ── */
+  /* ─── EXPORT CSV (fixed cross-browser) ─── */
   function exportCSV() {
     const rows = filtered.length ? filtered : allRows;
+    if (!rows.length) { alert('No transactions to export.'); return; }
+
+    const BOM = '\uFEFF'; // UTF-8 BOM for Excel compatibility
     const lines = ['Date,Description,Category,Amount'];
-    rows.forEach(r => lines.push(`${q(r.date)},${q(r.description)},${q(r.category)},${r.amount}`));
-    const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+    if (openingBalance !== null) lines.unshift(`Opening Balance,,,${openingBalance}`);
+    rows.forEach(r => lines.push(`${csvQ(r.date)},${csvQ(r.description)},${csvQ(r.category)},${r.amount}`));
+    if (closingBalance !== null) lines.push(`Closing Balance,,,${closingBalance}`);
+
+    const content = BOM + lines.join('\r\n');
+    const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+
+    // Cross-browser download
+    if (navigator.msSaveBlob) {
+      navigator.msSaveBlob(blob, 'bank_statement.csv');
+      return;
+    }
+    const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
+    a.href = url;
     a.download = 'bank_statement.csv';
+    a.style.display = 'none';
+    document.body.appendChild(a);
     a.click();
+    setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 200);
   }
 
   function resetAll() {
-    allRows = []; filtered = [];
+    allRows = []; filtered = []; openingBalance = null; closingBalance = null;
     document.getElementById('data-section').style.display = 'none';
     document.getElementById('upload-section').style.display = 'block';
     document.getElementById('fileinput').value = '';
     document.getElementById('file-badge-wrap').innerHTML = '';
   }
 
-  /* ── UTILS ── */
-  function fmtAmt(n) {
-    return Math.abs(n).toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  }
-  function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-  function q(s) { return '"' + String(s || '').replace(/"/g, '""') + '"'; }
+  /* ─── UTILS ─── */
+  function fmtAmt(n) { return Math.abs(n).toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function csvQ(s) { return '"' + String(s||'').replace(/"/g,'""') + '"'; }
 </script>
 </body>
 </html>
